@@ -175,7 +175,8 @@ extension ArgumentSet {
     case .allow:
       values.set(value, forKey: key, inputOrigin: origin)
     case .ignore:
-      break
+      // Ignore the value, but mark the origin as used:
+      values.add(inputOrigin: origin, for: key)
     }
     return true
   }

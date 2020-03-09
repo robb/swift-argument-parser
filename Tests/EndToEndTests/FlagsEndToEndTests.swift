@@ -30,6 +30,9 @@ fileprivate struct Bar: ParsableArguments {
 
   @Flag(inversion: .prefixedEnableDisable, exclusivity: .chooseFirst)
   var logging: Bool
+
+  @Flag(inversion: .prefixedEnableDisable, exclusivity: .chooseLast)
+  var download: Bool
 }
 
 extension FlagsEndToEndTests {
@@ -61,27 +64,75 @@ extension FlagsEndToEndTests {
     }
   }
   
-  func testParsing_invert() throws {
+  func testParsing_invert_1() throws {
     AssertParse(Bar.self, ["--no-extattr"]) { options in
       XCTAssertEqual(options.extattr, false)
     }
+  }
+
+  func testParsing_invert_2() throws {
     AssertParse(Bar.self, ["--extattr", "--no-extattr"]) { options in
       XCTAssertEqual(options.extattr, false)
     }
+  }
+
+  func testParsing_invert_3() throws {
     AssertParse(Bar.self, ["--extattr", "--no-extattr", "--no-extattr"]) { options in
       XCTAssertEqual(options.extattr, false)
     }
+  }
+
+  func testParsing_invert_4() throws {
     AssertParse(Bar.self, ["--no-extattr", "--no-extattr", "--extattr"]) { options in
       XCTAssertEqual(options.extattr, true)
     }
+  }
+
+  func testParsing_invert_5() throws {
     AssertParse(Bar.self, ["--extattr", "--no-extattr", "--extattr"]) { options in
       XCTAssertEqual(options.extattr, true)
     }
+  }
+
+  func testParsing_invert_6() throws {
     AssertParse(Bar.self, ["--enable-logging"]) { options in
       XCTAssertEqual(options.logging, true)
     }
+  }
+
+  func testParsing_invert_7() throws {
+    AssertParse(Bar.self, ["--disable-logging"]) { options in
+      XCTAssertEqual(options.logging, false)
+    }
+  }
+
+  func testParsing_invert_8() throws {
     AssertParse(Bar.self, ["--disable-logging", "--enable-logging"]) { options in
       XCTAssertEqual(options.logging, false)
+    }
+  }
+
+  func testParsing_invert_9() throws {
+    AssertParse(Bar.self, ["--enable-logging", "--disable-logging"]) { options in
+      XCTAssertEqual(options.logging, true)
+    }
+  }
+
+  func testParsing_invert_10() throws {
+    AssertParse(Bar.self, ["--enable-download"]) { options in
+      XCTAssertEqual(options.download, true)
+    }
+  }
+
+  func testParsing_invert_11() throws {
+    AssertParse(Bar.self, ["--disable-download", "--enable-download"]) { options in
+      XCTAssertEqual(options.download, true)
+    }
+  }
+
+  func testParsing_invert_12() throws {
+    AssertParse(Bar.self, ["--enable-download", "--disable-download"]) { options in
+      XCTAssertEqual(options.download, false)
     }
   }
 }
