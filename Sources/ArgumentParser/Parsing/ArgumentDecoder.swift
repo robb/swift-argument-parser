@@ -23,6 +23,9 @@ final class ArgumentDecoder: Decoder {
   }
   
   let values: ParsedValues
+  var environment: [EnvironmentName: String] {
+    return values.originalInput.environment
+  }
   var usedOrigins: InputOrigin
   var nextCommandIndex = 0
   var previouslyParsedValues: [(ParsableCommand.Type, ParsableCommand)] = []

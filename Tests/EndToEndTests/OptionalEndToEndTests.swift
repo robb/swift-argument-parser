@@ -206,3 +206,46 @@ extension OptionalEndToEndTests {
     XCTAssertThrowsError(try Bar.parse(["-f", "--name", "A"]))
   }
 }
+
+// MARK: -
+
+fileprivate struct Baz: ParsableArguments {
+  enum Format: String, ExpressibleByArgument {
+    case A
+    case B
+    case C
+  }
+  @Option(name: [.environment, .long]) var name: String?
+  @Option(name: [.environment, .long]) var format: Format?
+  @Option(name: [.environment, .long]) var foo: String
+}
+
+extension OptionalEndToEndTests {
+  func testParsingWithAllValuesFromEnvironment() {
+    AssertParse(Baz.self, [], environment: ["NAME": "A", "FORMAT": "B", "FOO": "C"]) { bar in
+      XCTAssertEqual(bar.name, "A")
+      XCTAssertEqual(bar.format, .B)
+      XCTAssertEqual(bar.foo, "C")
+    }
+  }
+
+  func testParsingFromEnvironmentAndArguments() {
+    AssertParse(Baz.self, [], environment: ["NAME": "A", "FORMAT": "B", "FOO": "C"]) { bar in
+      XCTAssertEqual(bar.name, "A")
+      XCTAssertEqual(bar.format, .B)
+      XCTAssertEqual(bar.foo, "C")
+    }
+
+    AssertParse(Baz.self, ["--format", "B"], environment: ["NAME": "A", "FOO": "C"]) { bar in
+      XCTAssertEqual(bar.name, "A")
+      XCTAssertEqual(bar.format, .B)
+      XCTAssertEqual(bar.foo, "C")
+    }
+
+    AssertParse(Baz.self, ["--name", "A", "--foo", "C"], environment: ["FORMAT": "B"]) { bar in
+      XCTAssertEqual(bar.name, "A")
+      XCTAssertEqual(bar.format, .B)
+      XCTAssertEqual(bar.foo, "C")
+    }
+  }
+}

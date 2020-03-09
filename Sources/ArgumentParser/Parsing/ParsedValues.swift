@@ -38,9 +38,7 @@ struct ParsedValues {
   var elements: [Element] = []
   
   /// This is the *original* array of arguments that this was parsed from.
-  ///
-  /// This is used for error output generation.
-  var originalInput: [String]
+  var originalInput: OriginalInput
 }
 
 enum LenientParsedValues {
