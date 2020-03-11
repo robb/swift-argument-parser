@@ -15,12 +15,12 @@ public protocol ParsableCommand: ParsableArguments {
   /// text.
   static var configuration: CommandConfiguration { get }
   
-  /// *For internal use only:* The name for the command on the command line.
+  /// The name for the command on the command line.
   ///
   /// This is generated from the configuration, if given, or from the type
   /// name if not. This is a customization point so that a WrappedParsable
   /// can pass through the wrapped type's name.
-  static var _commandName: String { get }
+  static var commandName: String { get }
   
   /// Runs this command.
   ///
@@ -32,7 +32,7 @@ public protocol ParsableCommand: ParsableArguments {
 }
 
 extension ParsableCommand {
-  public static var _commandName: String {
+  public static var commandName: String {
     configuration.commandName ??
       String(describing: Self.self).convertedToSnakeCase(separator: "-")
   }

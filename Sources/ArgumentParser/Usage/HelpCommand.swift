@@ -41,7 +41,7 @@ struct HelpCommand: ParsableCommand {
   
   init(commandStack: [ParsableCommand.Type]) {
     self.commandStack = commandStack
-    self._subcommands = Argument(_parsedValue: .value(commandStack.map { $0._commandName }))
+    self._subcommands = Argument(_parsedValue: .value(commandStack.map { $0.commandName }))
   }
 }
 

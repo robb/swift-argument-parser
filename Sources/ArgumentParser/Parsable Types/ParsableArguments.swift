@@ -38,7 +38,7 @@ public protocol ParsableArguments: Decodable {
 
 /// A type that provides the `ParsableCommand` interface to a `ParsableArguments` type.
 struct _WrappedParsableCommand<P: ParsableArguments>: ParsableCommand {
-  static var _commandName: String {
+  static var commandName: String {
     let name = String(describing: P.self).convertedToSnakeCase()
     
     // If the type is named something like "TransformOptions", we only want

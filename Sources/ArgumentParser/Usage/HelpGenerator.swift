@@ -105,7 +105,7 @@ internal struct HelpGenerator {
     
     let currentArgSet = ArgumentSet(currentCommand)
     
-    let toolName = commandStack.map { $0._commandName }.joined(separator: " ")
+    let toolName = commandStack.map { $0.commandName }.joined(separator: " ")
     var usageString = UsageGenerator(toolName: toolName, definition: [currentArgSet]).synopsis
     if !currentCommand.configuration.subcommands.isEmpty {
       if usageString.last != " " { usageString += " " }
@@ -200,7 +200,7 @@ internal struct HelpGenerator {
       commandStack.last!.configuration.subcommands.compactMap { command in
         guard command.configuration.shouldDisplay else { return nil }
         return Section.Element(
-          label: command._commandName,
+          label: command.commandName,
           abstract: command.configuration.abstract)
     }
     

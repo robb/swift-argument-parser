@@ -85,7 +85,7 @@ extension Tree where Element == ParsableCommand.Type {
   }
   
   func firstChild(withName name: String) -> Tree? {
-    children.first(where: { $0.element._commandName == name })
+    children.first(where: { $0.element.commandName == name })
   }
   
   convenience init(root command: ParsableCommand.Type) {
